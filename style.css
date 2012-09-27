@@ -1,17 +1,29 @@
+
+body
+{
+	
+}
+
 #container
 {
 	margin: 0 auto;
 	width: 100%;
-	background: #fff;
+	
+
 }
 
 #header
 {
-	background: #ccc;
+	background: #2D73B9;
 	padding: 20px;
+
 }
 
-#header h1 { margin: 0; }
+#header h1 
+{ 
+margin: 0;
+color:#FFFFFF;
+ }
 
 #navigation
 {
@@ -39,7 +51,7 @@
 	padding: 5px 10px;
 	color: #fff;
 	text-decoration: none;
-	border-right: 1px solid #fff;
+	border-right: 1px solid white;
 }
 
 #navigation li a:hover { background: #383; }
@@ -48,7 +60,8 @@
 {
 	float: left;
 	width: 100%;
-	background: #FFF url(layout-two-liquid-background.gif) repeat-y 68% 0;
+
+	
 }
 
 #content
@@ -60,6 +73,26 @@
 	margin: 0 0 0 4%;
 	display: inline;
 }
+
+#content table
+{
+
+}
+
+#content table td
+{
+    border:1px solid black;
+    background-color:lightblue;
+}
+
+#content table th
+{
+
+    border:1px solid black;
+    background-color: #2D73B9;
+}
+
+
 
 #content h2 { margin: 0; }
 
@@ -77,16 +110,26 @@
 	border-right-width:0px;
 }
 
-#aside h3 { margin: 0; }
+#aside h3 { margin: 0; padding:4px;  }
 
+#aside form
+{
+ padding:4px;
+
+}
 #footer
 {
 	clear: left;
-	background: #ccc;
+	background:  #2D73B9;
 	text-align: right;
-	padding: 20px;
-	height: 1%;
+	padding: 10px;
+	position:absolute;
+	bottom:0;
+	width:98%;
+	height:40px;   /* Height of the footer */
 }
+
+#footer p { color:#FFFFFF  }
 
 #signin
 {
