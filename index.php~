@@ -1,0 +1,84 @@
+<?php
+
+session_start();
+$name = '';
+
+if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+{
+	$name = $_SESSION['username'];
+	$id = $_SESSION['id'];
+}
+
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+<title> Monarch FAN Forums</title>
+</head>
+<body>
+
+<h3> Forums </h3>
+
+<?php
+
+require("config.php");
+if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+{
+	echo "Welcome ". $name;
+	echo"<hr>";
+	echo"<br>";
+}
+else
+{
+	echo "<p>Please sign in <p>";
+}
+
+
+$mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
+die ("could not connect to database.");
+
+//create_cat.php
+$sql = "SELECT categories.cat_id, categories.cat_name, categories.cat_description FROM `categories`";
+$result = $mysqli->query($sql);
+if(!$result)
+{
+	echo 'The categories could not be displayed, please try again later.';
+}
+else
+{
+	if($result->num_rows == 0)
+	{
+		echo 'No categories defined yet.';
+		print_r($result);
+	}
+	else
+	{
+		//prepare the table
+		echo '<table border="1">
+			  <tr>
+				<th>Category</th>
+				<th>Description</th>
+			  </tr>';
+		while($row = $result->fetch_assoc())
+		{
+			echo '<tr>';
+				echo '<td class="leftpart">';
+				echo '<h3><a href="category.php?id='. strval($row[cat_id]) . '">' . $row['cat_name'] . '</a></h3>';
+				echo '</td>';
+				echo '<td class="rightpart">';
+							echo ''. $row['cat_description'];
+				echo '</td>';
+			echo '</tr>';
+		}
+	}
+}
+?>
+
+</body>
+
+</html>
