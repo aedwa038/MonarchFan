@@ -8,35 +8,13 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 }
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<title> Monarch Forums</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-  <link rel="stylesheet" type="text/css" href="style.css" >
 
-</head>
-
-<body>
-<div id="container">
-	<div id="header">
-		<h1>Monarch Forums</h1>
-	</div>
-	<div id="navigation">
-		<ul>
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Contact Us</a></li>
-		</ul>
-	</div>
-	<div id="content-container">
-		<div id="content">
 
 
 
 <?php
 
-
+include("header.php");
 require("config.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
@@ -59,6 +37,11 @@ $sql = "SELECT
 }
 else
 {
+
+if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+{
+	echo'<a href="createtopic.php">  Create a topic </a>';
+}
 	if($result->num_rows == 0)
 	{
 		echo 'This category does not exist.';
@@ -126,6 +109,10 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
 	echo "Welcome ". $name;
 	echo"<br>";
+
+	echo'<form action="logout.php" method="post" >';
+	echo'<input type="submit" value="logout">';
+	echo '</form>';
 }
 else
 {
@@ -146,13 +133,7 @@ echo '
 	
 }
 echo"</div>";
+
+include ("footer.php");
 ?>
 
-<div id="footer">
-			<p>Copyright © MonarchFan, 2012</p>
-		</div>
-	</div>
-</div>
-</body>
-
-</html>

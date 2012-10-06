@@ -154,6 +154,9 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
 	echo "Welcome ". $name;
 	echo"<br>";
+		echo'<form action="logout.php" method="post" >';
+	echo'<input type="submit" value="logout">';
+	echo '</form>';
 }
 else
 {
@@ -174,17 +177,11 @@ echo '
 	
 }
 
-echo'</div>';		
+echo'</div>';	
+
+include ("footer.php");	
 		
 		
 ?>
 
 
-<div id="footer">
-			<p>Copyright © MonarchFan, 2012</p>
-		</div>
-	</div>
-</div>
-</body>
-
-</html>

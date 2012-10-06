@@ -1,5 +1,6 @@
 <?php
 
+include("header.php");
 require("config.php");
 
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
@@ -40,11 +41,11 @@ $query = "SELECT user_name, user_pass, user_id FROM `users` WHERE user_name= '".
    {
 	echo"Wrong Username or Password";
 	echo"<br>";
-	print_r($result);
+	//print_r($result);
    }
    
    
-  
+  include("footer.php");
 
 
 ?>

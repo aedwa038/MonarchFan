@@ -1,20 +1,21 @@
+<?php
+session_start();
+$name = '';
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+{
+	$name = $_SESSION['username'];
+	$id = $_SESSION['id'];
+}
 
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+?>
 
-<title> Monarch FAN Forums</title>
-</head>
-<body>
 
-<h3> Forums </h3>
 
 
 <?php
 //create_cat.php
+include("header.php");
 require("config.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
@@ -31,9 +32,6 @@ $topic_subject = $_POST['topic_subject'];
 
 $post = $_POST['post'];
 
-echo $cat_id;
-echo $topic_subject;
-echo $post;
 echo"<br>";
 
 
@@ -44,6 +42,9 @@ if($topic_subject == '' || $post == '')
 }
 else
 {
+
+	$topic_subject = $mysqli->real_escape_string($topic_subject);
+	$post = $mysqli->real_escape_string($post);
 
 
 		$query  = "BEGIN WORK;";
@@ -67,7 +68,7 @@ else
 							   topic_by)
 				   VALUES('" . $mysqli->real_escape_string($topic_subject) . "',
 							   NOW(),
-							   " . $mysqli->real_escape_string($cat_id) . ", 1)";
+							   " . $mysqli->real_escape_string($cat_id) . ",". $id . ")";
 			$result = $mysqli->query($sql);
 			
 			
@@ -95,7 +96,7 @@ else
 						VALUES
 							('" . $mysqli->real_escape_string($post) . "',
 								  NOW(),
-								  " . $topicid . ",1)";
+								  " . $topicid . ",". $id . ")";
 								  $result = $mysqli->query($sql);
 								
 
@@ -122,8 +123,9 @@ else
 		}	
 	}
 
+
+include("footer.php");
+
 ?>
 
-</body>
 
-</html>
