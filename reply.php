@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST')
 $reply = $_POST['reply'];
 $topic_id = $_POST['topic_id'] ;
 
-$reply = $mysqli->real_escape_string($reply);
+//$reply = $mysqli->real_escape_string($reply);
 
 
  if ($reply == '')
