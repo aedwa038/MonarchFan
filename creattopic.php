@@ -43,8 +43,8 @@ if($topic_subject == '' || $post == '')
 else
 {
 
-	$topic_subject = $mysqli->real_escape_string($topic_subject);
-	$post = $mysqli->real_escape_string($post);
+	//$topic_subject = $mysqli->real_escape_string($topic_subject);
+	//$post = $mysqli->real_escape_string($post);
 
 
 		$query  = "BEGIN WORK;";
