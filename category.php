@@ -52,10 +52,10 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 		//display category data
 		while($row = $result->fetch_assoc())
 		{
-			echo "<h2>Topics in " . $row['cat_name'] . " category</h2>";
+			echo "<h2>" . $row['cat_name'] . " category</h2>";
 		}
 		//do a query for the topics
-		$query = "SELECT
+		$query = "  SELECT
 					topic_id,
 					topic_subject,
 					topic_date,
@@ -63,7 +63,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 				FROM
 					topics
 				WHERE
-					topic_cat = " .$_GET['id'];
+					topic_cat =  " .$_GET['id'] . " Order by topic_date DESC " ;
 		$result2 = $mysqli->query($query);
 		if(!$result2)
 		{
@@ -83,16 +83,77 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 				//prepare the table
 				echo '<table width="100%">
 					  <tr>
+						<th></th>
 						<th>Topic</th>
-						<th>Created at</th>
+						<th>Author </th>
+						<th> Replies</th>
+						<th> Last Post:</th>
+						<th>Created Date</th>
 					  </tr>';
 				while($row2 = $result2->fetch_assoc())
 				{
 					echo '<tr>';
-						echo '<td class="leftpart" width="80%" >';
+					echo'<td><img src="imgs/web_layout_32.png" alt="icon" ></td>';
+						echo '<td class="leftpart" width="40%" >';
 							echo '<strong><a href="topic.php?id=' . $row2['topic_id'] . '">' . $row2['topic_subject'] . '</a></strong>';
 						echo '</td>';
-						echo '<td class="rightpart" width="20%">';
+						//$posts = "Select post_by FROM `posts` Where post_topic ='". $row2[$topic_id] . "' Order by post_date";
+
+						$posts = "SELECT post_by
+						FROM `posts`
+						WHERE post_topic =" . strval( $row2[topic_id]) ." Order by post_date" ;
+						
+
+						
+						$result3 = $mysqli->query($posts);
+						$row4 = $result3->fetch_assoc();
+						$post_by = $row4[post_by];
+						
+						$names = "SELECT user_name
+						FROM `users`
+						WHERE user_id = ".$post_by  ;
+						//echo"$names";
+					
+
+						$result4 = $mysqli->query($names);
+						$row5 = $result4->fetch_assoc();
+					
+						$user_id = $row5['user_name'];
+						echo"<td> $user_id </td>";
+						
+
+						$rep = "SELECT post_by
+						FROM `posts`
+						WHERE post_topic =" . strval( $row2[topic_id]) ." Order by post_date" ;
+						//echo $rep;
+						$result5 = $mysqli->query($rep);
+							
+						
+						$replies = $result5->num_rows - 1;
+
+						echo"<td class='centered-cell' > $replies</td>";
+						
+						$last = "SELECT post_by, post_date
+						FROM `posts`
+						WHERE post_topic =" . strval( $row2[topic_id]) ." Order by post_date DESC" ;
+						$result6 = $mysqli->query($last); 
+						
+						$row6 = $result6->fetch_assoc();
+						$last_post = $row6['post_by'];
+						//echo"$last_post";
+
+						$names2 = "SELECT user_name
+						FROM `users`
+						WHERE user_id = ".$last_post  ;
+						//echo $names2;
+						$result6 = $mysqli->query($names2);
+						$row7 = $result6->fetch_assoc();
+					
+						$last_date = $row6['post_date'];
+						$last_user = $row7['user_name'];
+						echo"<td>$last_user <br> $last_date  </td>";
+						
+						echo '<td class="rightpart" width="10%">';
 							echo date('d-m-Y', strtotime($row2['topic_date']));
 						echo '</td>';
 					echo '</tr>';
@@ -109,6 +170,27 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
 	echo "Welcome ". $name;
 	echo"<br>";
+
+	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;
+	//echo "$query";
+	$result1 = $mysqli->query($query); 
+
+	$row2 = $result1->fetch_assoc();
+	
+	$level = $row2[user_level];	
+	
+	//echo "level $level  $result1->num_rows";
+	$query2 = "SELECT level FROM `admin_level` WHERE id ="  .$level ;
+	//echo"$query2";
+
+      $result2 = $mysqli->query($query2);
+      $row3 = $result2->fetch_assoc();
+      $level = $row3[level];
+
+      if($level != "user")
+      {
+	echo"$level";
+      }	
 
 	echo'<form action="logout.php" method="post" >';
 	echo'<input type="submit" value="logout">';

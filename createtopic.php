@@ -67,6 +67,26 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 	echo "Welcome ". $name;
 	echo"<br>";
 
+$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;
+	//echo "$query";
+	$result1 = $mysqli->query($query); 
+
+	$row2 = $result1->fetch_assoc();
+	
+	$level = $row2[user_level];	
+	
+	//echo "level $level  $result1->num_rows";
+	$query2 = "SELECT level FROM `admin_level` WHERE id ="  .$level ;
+	//echo"$query2";
+
+      $result2 = $mysqli->query($query2);
+      $row3 = $result2->fetch_assoc();
+      $level = $row3[level];
+
+      if($level != "user")
+      {
+	echo"$level";
+      }	
 		echo'<form action="logout.php" method="post" >';
 	echo'<input type="submit" value="logout">';
 	echo '</form>';

@@ -20,6 +20,7 @@ die ("could not connect to database.");
 
 //create_cat.php
 $sql = "SELECT categories.cat_id, categories.cat_name, categories.cat_description FROM `categories`";
+//echo "$sql";
 $result = $mysqli->query($sql);
 
 echo"<h1> Forums </h1> ";
@@ -53,7 +54,10 @@ else
 				echo '<strong><a href="category.php?id='. strval($row[cat_id]) . '">' . $row['cat_name'] . '</a></strong><br> ';
 		echo ''. $row['cat_description'];
 		echo '</td>';
-		echo '<td></td>';
+
+		$topics = "SELECT * FROM `topics` WHERE topic_cat =". $row[cat_id];
+		$tops = $mysqli->query($topics);
+		echo '<td class="centered-cell">'. $tops->num_rows. '</td>';
 			echo '</tr>';
 		}
 
@@ -69,6 +73,27 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 	echo "Welcome ". $name;
 	echo"<br>";
 	
+	
+	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;
+	//echo "$query";
+	$result1 = $mysqli->query($query); 
+
+	$row2 = $result1->fetch_assoc();
+	
+	$level = $row2[user_level];	
+	
+	//echo "level $level  $result1->num_rows";
+	$query2 = "SELECT level FROM `admin_level` WHERE id ="  .$level ;
+	//echo"$query2";
+
+      $result2 = $mysqli->query($query2);
+      $row3 = $result2->fetch_assoc();
+      $level = $row3[level];
+
+      if($level != "user")
+      {
+	echo"$level";
+      }	
 	echo'<form action="logout.php" method="post" >';
 	echo'<input type="submit" value="logout">';
 	echo '</form>';

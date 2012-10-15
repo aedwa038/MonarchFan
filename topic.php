@@ -47,7 +47,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 	</div>
 	<div id="navigation">
 		<ul>
-			<li><a href="#">Home</a></li>
+			<li><a href="index.php">Home</a></li>
 			<li><a href="#">Contact Us</a></li>
 		</ul>
 	</div>
@@ -90,8 +90,7 @@ return $output;
 
 
 require("config.php");
-$mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
-die ("could not connect to database.");
+$mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or die ("could not connect to database.");
 
 $sql= "SELECT
     topic_id,
@@ -112,7 +111,8 @@ WHERE
 	posts.post_date,
 	posts.post_by,
 	users.user_id,
-	users.user_name
+	users.user_name,
+	users.user_level
 FROM
 	posts
 LEFT JOIN
@@ -149,10 +149,20 @@ WHERE
 				{
 					echo '<tr>';
 						echo '<td class="leftpart">';
-							echo $row2['user_name'] ;
+							echo $row2['user_name'];
+							echo"<br>";
+
+								$query3 = "SELECT level FROM `admin_level` WHERE id ="  .$row2['user_level'] ;
+
+							$result3 = $mysqli->query($query3);
+      							$row4 = $result3->fetch_assoc();
+      							$level = $row4[level];
+							echo $level;
 						echo '</td>';
 						echo '<td class="rightpart">';
-						
+						     	  
+							echo strval($row2['post_date']);
+							echo "<hr>";
 							echo nl2br(mysql_real_unescape_string($row2['post_content']), 2);
 						echo '</td>';
 					echo '</tr>';
@@ -186,6 +196,28 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
 	echo "Welcome ". $name;
 	echo"<br>";
+
+	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;
+	//echo "$query";
+	$result1 = $mysqli->query($query); 
+
+	$row2 = $result1->fetch_assoc();
+	
+	$level = $row2[user_level];	
+	
+	//echo "level $level  $result1->num_rows";
+	$query2 = "SELECT level FROM `admin_level` WHERE id ="  .$level ;
+	//echo"$query2";
+
+      $result2 = $mysqli->query($query2);
+      $row3 = $result2->fetch_assoc();
+      $level = $row3[level];
+
+      if($level != "user")
+      {
+	echo"$level";
+      }	
+
 		echo'<form action="logout.php" method="post" >';
 	echo'<input type="submit" value="logout">';
 	echo '</form>';
@@ -211,7 +243,7 @@ echo '
 
 echo'</div>';	
 
-include ("footer.php");	
+//include ("footer.php");	
 		
 		
 ?>
