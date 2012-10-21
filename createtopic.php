@@ -83,10 +83,9 @@ $query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;
       $row3 = $result2->fetch_assoc();
       $level = $row3[level];
 
-      if($level != "user")
-      {
+      
 	echo"$level";
-      }	
+     
 		echo'<form action="logout.php" method="post" >';
 	echo'<input type="submit" value="logout">';
 	echo '</form>';

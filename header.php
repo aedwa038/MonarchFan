@@ -1,3 +1,18 @@
+<?php
+
+session_start();
+$name = '';
+
+if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+{
+	$name = $_SESSION['username'];
+	$id = $_SESSION['id'];
+	$acess = $_SESSION['level'];
+
+}
+
+?>
+
 <html>
 <head>
 <title> Monarch Forums</title>
@@ -14,6 +29,17 @@
 	<div id="navigation">
 		<ul>
 			<li><a href="index.php">Home</a></li>
+			<?php
+
+			if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+			   {
+			       if($acess == 2)
+			         {
+			             echo'<li><a href="panel.php"> Admin Page</a></li>';
+			         }
+			   
+			   }
+			   ?>
 			<li><a href="#">Contact Us</a></li>
 		</ul>
 	</div>

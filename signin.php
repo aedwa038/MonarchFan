@@ -12,7 +12,7 @@ $password = $_POST['password'];
 $name = $mysqli->real_escape_string($name);
 $password = $mysqli->real_escape_string($password);
 
-$query = "SELECT user_name, user_pass, user_id FROM `users` WHERE user_name= '".$name. 
+$query = "SELECT user_name, user_pass, user_id, user_level FROM `users` WHERE user_name= '".$name. 
 "' AND user_pass='"  . $password . "'" ;
    $result = $mysqli ->query($query) or die ("Could not complete query" );
    
@@ -28,9 +28,12 @@ $query = "SELECT user_name, user_pass, user_id FROM `users` WHERE user_name= '".
 		session_start();
 		$_SESSION['username'] = $name;
 		$_SESSION['id'] = $row['user_id'] ;
+		$_SESSION['level'] = $row['user_level'];
 		$_SESSION['signed_in'] = "true";
 		
-		echo"Redirecting to front page";
+		//echo"Redirecting to front page";
+		//echo'<a href="index.php">frontpage</a>';
+		//echo"Memebership type =" .$_SESSION['level'];
 		header("location:index.php");
 		
 		//print_r($row);

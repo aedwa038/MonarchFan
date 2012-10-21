@@ -7,6 +7,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
 	$name = $_SESSION['username'];
 	$id = $_SESSION['id'];
+	$acess = $_SESSION['level'];
 }
 
 ?>
@@ -90,6 +91,7 @@ return $output;
 
 
 require("config.php");
+require_once("paginator.class.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or die ("could not connect to database.");
 
 $sql= "SELECT
@@ -103,9 +105,11 @@ WHERE
 	$result = $mysqli->query($sql) or die("could not retrieve topic");
 	
 	$row = $result->fetch_assoc();
-	echo "<h2>" . $row['topic_subject'] . "Disscussion </h2>" ;
+	echo "<h2>" . $row['topic_subject'] . " Disscussion </h2>" ;
 	
-	$query = "SELECT
+	
+	
+	$query1 = "SELECT
 	posts.post_topic,
 	posts.post_content,
 	posts.post_date,
@@ -122,7 +126,36 @@ ON
 WHERE
 	posts.post_topic = " . $mysqli->real_escape_string($_GET['id']);
 	
-	$result2 = $mysqli->query($query);
+
+
+	$page = $mysqli->query($query1) or die ("Could not complete query");
+	
+	$pages = new Paginator;
+	
+
+	$pages->items_total = $page->num_rows;
+	$pages->mid_range = 5;
+	$pages->paginate();
+
+	
+	$query = "SELECT
+	posts.post_topic,
+	posts.post_content,
+	posts.post_date,
+	posts.post_by,
+	users.user_id,
+	users.user_name,
+	users.user_level
+FROM
+	posts
+LEFT JOIN
+	users
+ON
+	posts.post_by = users.user_id
+WHERE
+	posts.post_topic = " .$_GET['id'] . " $pages->limit" ;
+	//echo $query;
+	$result2 = $mysqli->query($query) or die ("could not complete query");
 	if(!$result2)
 		{
 			
@@ -139,6 +172,12 @@ WHERE
 			}
 			else
 			{
+				echo $pages->display_pages();
+				
+					if( $acess >= 2)
+				{
+				    echo '<span style="margin-left:25px"> '. $pages->display_jump_menu()   . $pages->display_items_per_page() . '</span>';  
+				}
 				//prepare the table
 				echo '<table border="1" cellspacing="3px" cellpadding="5px"width="100%" >
 					  <tr>
@@ -149,13 +188,14 @@ WHERE
 				{
 					echo '<tr>';
 						echo '<td class="leftpart">';
-							echo $row2['user_name'];
+							echo '<a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a>';
 							echo"<br>";
 
 								$query3 = "SELECT level FROM `admin_level` WHERE id ="  .$row2['user_level'] ;
 
 							$result3 = $mysqli->query($query3);
       							$row4 = $result3->fetch_assoc();
+								
       							$level = $row4[level];
 							echo $level;
 						echo '</td>';
@@ -172,6 +212,7 @@ WHERE
 		}
 		
 	echo"</table>";		
+	echo $pages->display_pages();
 
 
 		echo "<br>";

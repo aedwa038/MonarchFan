@@ -10,6 +10,15 @@ if($_SERVER['REQUEST_METHOD'] != 'POST')
 }
 else
 {
+
+if($_POST['cat_name'] == '' || $_POST[catdescription] == '')
+{
+	echo"Incorrect Data sent ";
+	exit();
+
+}	
+	
+		
 	//the form has been posted, so save it
 	//$sql = "INSERT INTO categories(cat_name, cat_description)
  	  // VALUES('' . mysql_real_escape_string($_POST['cat_name']),

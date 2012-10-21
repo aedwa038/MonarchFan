@@ -162,7 +162,17 @@ color:#FFFFFF;
        	width: 30px;
 }
 
-
+ #element
+       {
+       	width:150px;
+       	padding:4px;
+       	float:left;
+       }
+       
+       #options
+       {
+       		width: 30px;
+       }
 
 
 

@@ -5,24 +5,23 @@ $name = '';
 if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
 	$name = $_SESSION['username'];
+	$id = $_SESSION['id'];
+	$acess = $_SESSION['level'];
 }
 
 ?>
-
-
-
-
 <?php
 
 include("header.php");
 require("config.php");
+require_once("paginator.class.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
-
 $sql = "SELECT
 			cat_id,
 			cat_name,
-			cat_description
+			cat_description,
+			paginate
 		FROM
 			categories
 		WHERE
@@ -40,7 +39,7 @@ else
 
 if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 {
-	echo'<a href="createtopic.php">  Create a topic </a>';
+	echo'<p><a href="createtopic.php">  Create a topic </a> </p>';
 }
 	if($result->num_rows == 0)
 	{
@@ -55,7 +54,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 			echo "<h2>" . $row['cat_name'] . " category</h2>";
 		}
 		//do a query for the topics
-		$query = "  SELECT
+		$query1 = "  SELECT
 					topic_id,
 					topic_subject,
 					topic_date,
@@ -63,8 +62,38 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 				FROM
 					topics
 				WHERE
-					topic_cat =  " .$_GET['id'] . " Order by topic_date DESC " ;
-		$result2 = $mysqli->query($query);
+					topic_cat =  " .$_GET['id'] . " Order by topic_date DESC ";
+		$page = $mysqli->query($query1);
+		$pages = new Paginator;
+	$pages->items_total = $page->num_rows;
+	$pages->mid_range = 5;
+	$pages->paginate();
+	//echo $page->num_rows;
+	//echo $pages->limit;
+	
+	//echo $pages->display_pages();
+	
+	
+	$query = "  SELECT
+					topic_id,
+					topic_subject,
+					topic_date,
+					topic_cat
+				FROM
+					topics
+				WHERE
+					topic_cat =  " .$_GET['id'] . " Order by topic_date DESC " . $pages->limit;
+					
+					$result2 = $mysqli->query($query);
+	
+				
+				echo $pages->display_pages();
+				
+				if( $acess >= 2)
+				{
+				    echo '<span style="margin-left:25px"> '. $pages->display_jump_menu()   . $pages->display_items_per_page() . '</span>';  
+				}
+				//echo "Page $pages->current_page of $pages->num_pages"; 
 		if(!$result2)
 		{
 			
@@ -80,6 +109,8 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 			}
 			else
 			{
+			
+		
 				//prepare the table
 				echo '<table width="100%">
 					  <tr>
@@ -109,7 +140,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 						$row4 = $result3->fetch_assoc();
 						$post_by = $row4[post_by];
 						
-						$names = "SELECT user_name
+						$names = "SELECT user_name, user_id
 						FROM `users`
 						WHERE user_id = ".$post_by  ;
 						//echo"$names";
@@ -119,7 +150,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 						$row5 = $result4->fetch_assoc();
 					
 						$user_id = $row5['user_name'];
-						echo"<td> $user_id </td>";
+						echo'<td><a href=members.php?id="'.$row5['user_id'] .'">'. $user_id .'<a></td>';
 						
 
 						$rep = "SELECT post_by
@@ -142,7 +173,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 						$last_post = $row6['post_by'];
 						//echo"$last_post";
 
-						$names2 = "SELECT user_name
+						$names2 = "SELECT user_name, user_id
 						FROM `users`
 						WHERE user_id = ".$last_post  ;
 						//echo $names2;
@@ -151,7 +182,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 					
 						$last_date = $row6['post_date'];
 						$last_user = $row7['user_name'];
-						echo"<td>$last_user <br> $last_date  </td>";
+						echo'<td><a href=members.php?id="'. $row7['user_id']  . '" >' .$last_user .'</a><br>'. $last_date . '</td>';
 						
 						echo '<td class="rightpart" width="10%">';
 							echo date('d-m-Y', strtotime($row2['topic_date']));
@@ -164,6 +195,10 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 	}
 }
 echo "</table>";
+echo"<br>";
+echo $pages->display_pages();
+echo"<br>";
+echo "Page $pages->current_page of $pages->num_pages"; 
 echo "</div>";
 echo '	<div id="aside">';
 if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
