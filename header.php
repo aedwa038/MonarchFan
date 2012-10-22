@@ -16,6 +16,7 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 <html>
 <head>
 <title> Monarch Forums</title>
+<meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
   <link rel="stylesheet" type="text/css" href="style.css" >
 
@@ -30,8 +31,16 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 		<ul>
 			<li><a href="index.php">Home</a></li>
 			<?php
+			
+			if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
 
-			if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+	}
+
+			if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 			   {
 			       if($acess == 2)
 			         {

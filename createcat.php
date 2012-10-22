@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST')
 else
 {
 
-if($_POST['cat_name'] == '' || $_POST[catdescription] == '')
+if($_POST['cat_name'] == '' || $_POST['cat_description'] == '')
 {
 	echo"Incorrect Data sent ";
 	exit();
@@ -36,7 +36,9 @@ if($_POST['cat_name'] == '' || $_POST[catdescription] == '')
 	else
 	{
 		echo 'New category successfully added.';
-	}	echo $sql;
+	}	//echo $sql;
+		
 		echo "<br>";	
+		header("location:topic.php?id=". $topic_id );
 }
 ?>

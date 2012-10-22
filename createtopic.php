@@ -16,14 +16,22 @@ include("header.php");
 require("config.php");
 
 
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
 
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+
+}
 
 
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
 echo '<h3> Topic Creation </h3>';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 echo '<form method="post" action="creattopic.php">';
 
@@ -62,7 +70,7 @@ else
 
 echo "</div>";
 echo '	<div id="aside">';
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 	echo "Welcome ". $name;
 	echo"<br>";

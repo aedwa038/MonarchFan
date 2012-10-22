@@ -25,13 +25,27 @@ $query = "SELECT user_name, user_pass, user_id, user_level FROM `users` WHERE us
 		echo"<br>";
 		
 		$row = $result->fetch_assoc();
-		session_start();
-		$_SESSION['username'] = $name;
-		$_SESSION['id'] = $row['user_id'] ;
-		$_SESSION['level'] = $row['user_level'];
-		$_SESSION['signed_in'] = "true";
-		
+		//session_start();
+		//$_SESSION['username'] = $name;
+		//$_SESSION['id'] = $row['user_id'] ;
+		//$_SESSION['level'] = $row['user_level'];
+		//$_SESSION['signed_in'] = "true";
+		if( $_POST['remember'] == 'YES' )
+		{
+			setcookie("username", $name, time() + 31536000);
+			setcookie("id", $row['user_id'], time() + 31536000);
+			setcookie("level", $row['user_level'], time() + 31536000);
+			setcookie("signed_in", "true", time () + 31536000);
+		}
+		else
+		{
+			setcookie("username", $name);
+			setcookie("id", $row['user_id']);
+			setcookie("level", $row['user_level']);
+			setcookie("signed_in", "true");
+		}
 		//echo"Redirecting to front page";
+		//echo $_POST['remember'];
 		//echo'<a href="index.php">frontpage</a>';
 		//echo"Memebership type =" .$_SESSION['level'];
 		header("location:index.php");

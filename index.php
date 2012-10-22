@@ -1,14 +1,13 @@
 <?php
 
-session_start();
 $name = '';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 
-	$name = $_SESSION['username'];
-	$id = $_SESSION['id'];
-	$acess = $_SESSION['level'];
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
 
 }
 
@@ -16,15 +15,36 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 
 
 <?php
+
 include("header.php");
 require("config.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
 
+
+
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+
+}
+
 //create_cat.php
 $sql = "SELECT categories.cat_id, categories.cat_name, categories.cat_description FROM `categories`";
 //echo "$sql";
+
+
 $result = $mysqli->query($sql);
+
+
+
+
+
 
 echo"<h1> Forums </h1> ";
 if(!$result)
@@ -71,11 +91,13 @@ else
 
 echo "</div>";
 echo '	<div id="aside">';
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
-	echo "Welcome ". $name;
+	echo "Welcome ";
+	echo $name;
 	echo"<br>";
-	
+	echo'<img src="imgs/img02.png" default="avatar pic" width="25%" height="15%" >';
+	echo"<br>";
 	$query2 = "SELECT level FROM `admin_level` WHERE id ="  .$acess ;
 	//echo"$query2";
 
@@ -104,7 +126,8 @@ echo '
 	<label class="element">Password:</label><br>
 	<input type="password" name="password">
 	<br>
-	<input type="submit" value="signin">
+	<input type="checkbox" name="remember" value="YES"> Remember Me
+	<div id="butt"><input type="submit" value="signin" ></div>
 	</form>
 		 ';
 	

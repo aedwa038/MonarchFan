@@ -22,6 +22,24 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 
 <?php
 
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+		if($acess < 2)
+	{
+
+		echo"Your not suppose to be here";
+		exit();
+	}
+
+}
+
+
 include("header.php");
 require("config.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or

@@ -3,11 +3,14 @@
 session_start();
 $name = '';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
-	$name = $_SESSION['username'];
-	$id = $_SESSION['id'];
-	$acess = $_SESSION['level'];
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+
 }
 
 ?>
@@ -60,6 +63,16 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 
 <?php
 
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+
+}
 
 function mysql_real_unescape_string($input,$checkbr) {
 
@@ -187,9 +200,14 @@ WHERE
 				while($row2 = $result2->fetch_assoc())
 				{
 					echo '<tr>';
-						echo '<td class="leftpart">';
-							echo '<a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a>';
+						echo '<td class="leftpart" width="15%" rowspan="2">';
+							echo '<strong> <a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a> </strong>';
 							echo"<br>";
+							echo"<br>";
+
+							echo'<img src="imgs/img02.png" default="avatar pic" width="50%" height="40%" >';
+								  echo"<br>";
+								  echo"<br>";
 
 								$query3 = "SELECT level FROM `admin_level` WHERE id ="  .$row2['user_level'] ;
 
@@ -199,11 +217,17 @@ WHERE
       							$level = $row4[level];
 							echo $level;
 						echo '</td>';
-						echo '<td class="rightpart">';
-						     	  
+						echo '<td class="rightpart" height="10%">';
+					
+						     
 							echo strval($row2['post_date']);
-							echo "<hr>";
+							echo'</td>';
+							echo"</tr>";
+							echo"<tr>";
+							echo '<td class="rightpart">';
+							//echo "<hr>";
 							echo nl2br(mysql_real_unescape_string($row2['post_content']), 2);
+							//echo $row2['post_content'];
 						echo '</td>';
 					echo '</tr>';
 				}
@@ -217,7 +241,7 @@ WHERE
 
 		echo "<br>";
 		echo "<hr>";
-		if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+		if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 	echo "<h4>Quick Reply</h4>";
 	
@@ -233,9 +257,12 @@ WHERE
 
 echo "</div>";
 echo '	<div id="aside">';
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 	echo "Welcome ". $name;
+	echo"<br>";
+
+	echo'<img src="imgs/img02.png" default="avatar pic" width="25%" height="15%" >';
 	echo"<br>";
 
 	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;

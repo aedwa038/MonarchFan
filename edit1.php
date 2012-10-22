@@ -1,14 +1,17 @@
 <?php
 
-session_start();
 $name = '';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+?>
+
+<?php
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 
-	$name = $_SESSION['username'];
-	$id = $_SESSION['id'];
-	$acess = $_SESSION['level'];
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
 	
 	if($acess < 2)
 	{
@@ -17,11 +20,9 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 		exit();
 	}	
 
+
 }
 
-?>
-
-<?php
 //create_cat.php
 require("config.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
@@ -42,12 +43,12 @@ if($_POST['cat_name'] == '' || $_POST[cat_description] == '' || $_POST['cat_id']
 }
 
 
-//$sql = "UPDATE `aedwards`.`categories` SET `cat_name` = '". $_POST['cat_name']   ."',
+$sql = "UPDATE `aedwards`.`categories` SET `cat_name` = '". $_POST['cat_name']   ."',
 `cat_description` = '".$_POST[cat_description]  ."' WHERE `categories`.`cat_id` =" . $_POST['cat_id'];
 
 
 
-echo $sql;
+//echo $sql;
 
 echo"<br>";
 

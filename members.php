@@ -3,18 +3,31 @@
 session_start();
 $name = '';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 
-	$name = $_SESSION['username'];
-	$id = $_SESSION['id'];
-	$acess = $_SESSION['level'];
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
 
 }
 
 ?>
 
 <?php
+
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+
+}
+
 
 include("header.php");
 require("config.php");

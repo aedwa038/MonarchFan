@@ -2,19 +2,31 @@
 session_start();
 $name = '';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
-	$name = $_SESSION['username'];
-	$id = $_SESSION['id'];
-	$acess = $_SESSION['level'];
-}
 
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+}
 ?>
 <?php
 
 include("header.php");
 require("config.php");
 require_once("paginator.class.php");
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+
+}
+
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
 $sql = "SELECT
@@ -37,14 +49,11 @@ $sql = "SELECT
 else
 {
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
-{
-	echo'<p><a href="createtopic.php">  Create a topic </a> </p>';
-}
+
 	if($result->num_rows == 0)
 	{
 		echo 'This category does not exist.';
-	}
+	}	
 	
 	else
 	{
@@ -93,6 +102,12 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 				{
 				    echo '<span style="margin-left:25px"> '. $pages->display_jump_menu()   . $pages->display_items_per_page() . '</span>';  
 				}
+
+				if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+				{
+					//echo'<p><a href="createtopic.php">  Create a topic </a> </p>';
+					echo'<a href="createtopic.php" class="button">create thread</a>';
+				}	
 				//echo "Page $pages->current_page of $pages->num_pages"; 
 		if(!$result2)
 		{
@@ -106,6 +121,11 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 			if($result2->num_rows == 0)
 			{
 				echo 'There are no topics in this category yet.';
+				if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+				{
+					//echo'<p><a href="createtopic.php">  Create a topic </a> </p>';
+					echo'<a href="createtopic.php" class="button">create thread</a>';
+				}
 			}
 			else
 			{
@@ -201,9 +221,12 @@ echo"<br>";
 echo "Page $pages->current_page of $pages->num_pages"; 
 echo "</div>";
 echo '	<div id="aside">';
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 	echo "Welcome ". $name;
+	echo"<br>";
+	
+echo'<img src="imgs/img02.png" default="avatar pic" width="25%" height="15%" >';
 	echo"<br>";
 
 	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;

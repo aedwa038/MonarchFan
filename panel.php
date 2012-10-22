@@ -4,21 +4,23 @@
 session_start();
 $name = '';
 
-if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 {
 
-	$name = $_SESSION['username'];
-	$id = $_SESSION['id'];
-	$acess = $_SESSION['level'];
-	
-	if($acess < 2)
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+		if($acess < 2)
 	{
 
 		echo"Your not suppose to be here";
 		exit();
-	}	
+	}
 
 }
+
 
 ?>
 
