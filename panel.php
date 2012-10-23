@@ -3,55 +3,33 @@
 
 session_start();
 $name = '';
-
-
-if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
-{
-
-	$name = $_COOKIE['username'];
-	$id = $_COOKIE['id'];
-	$acess = $_COOKIE['level'];
-
-		if($acess < 2)
-	{
-
-		echo"Your not suppose to be here";
-		exit();
-	}
-
-}
-
-
-?>
-
-
-
-<?php
-
-if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
-{
-
-	$name = $_COOKIE['username'];
-	$id = $_COOKIE['id'];
-	$acess = $_COOKIE['level'];
-
-		if($acess < 2)
-	{
-
-		echo"Your not suppose to be here";
-		exit();
-	}
-
-}
-else
-{
-		echo"Your not suppose to be here";
-		exit();
-}
-
-
 include("header.php");
 require("config.php");
+
+if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+
+		if($acess < 2)
+	{
+
+		echo"Your not suppose to be here";
+		exit();
+	}
+
+
+
+
+
+
+
+
+
+
+
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
 
@@ -64,7 +42,8 @@ echo '<table width="100%">
      </tr>';
 echo'<td>';
 	echo'<a href="creatcat.php"> Add Forum</a> <br>';
-	echo'<a href="forums.php">Veiw Forums </a>';
+	echo'<a href="forums.php">View Forums </a> <br>';
+	echo'<a href="delete.php">Delete Forums </a>';
 echo'</td>';
 
 echo'<td>';
@@ -74,6 +53,10 @@ echo'<td>';
 echo'</td>';
 
 echo '</table>';
+
+}
+else
+echo "Your not suppose to be here";
 
 include("footer.php");
 ?>

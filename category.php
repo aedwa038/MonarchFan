@@ -267,13 +267,20 @@ echo '
 	<label class="element">Password:</label><br>
 	<input type="password" name="password">
 	<br>
-	<input type="submit" value="signin">
+	<input type="checkbox" name="remember" value="YES"> Remember Me
+	<div id="butt"><input type="submit" value="signin" ></div>
 	</form>
 		 ';
 	
 }
 echo"</div>";
 
-include ("footer.php");
+//include ("footer.php");
 ?>
+
+</div>
+</div>
+</body>
+
+</html>
 
