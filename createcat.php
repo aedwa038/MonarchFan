@@ -39,6 +39,6 @@ if($_POST['cat_name'] == '' || $_POST['cat_description'] == '')
 	}	//echo $sql;
 		
 		echo "<br>";	
-		header("location:topic.php?id=". $topic_id );
+		header("location:index.php");
 }
 ?>

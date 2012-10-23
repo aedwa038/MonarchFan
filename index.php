@@ -96,7 +96,7 @@ if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 	echo "Welcome ";
 	echo $name;
 	echo"<br>";
-	echo'<img src="imgs/img02.png" default="avatar pic" width="25%" height="15%" >';
+	echo'<img src="imgs/img02.png" default="avatar pic" width="85" height="75" >';
 	echo"<br>";
 	$query2 = "SELECT level FROM `admin_level` WHERE id ="  .$acess ;
 	//echo"$query2";

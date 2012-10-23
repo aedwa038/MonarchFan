@@ -52,6 +52,26 @@ if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 	<div id="navigation">
 		<ul>
 			<li><a href="index.php">Home</a></li>
+			<?php
+			
+			if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+{
+
+	$name = $_COOKIE['username'];
+	$id = $_COOKIE['id'];
+	$acess = $_COOKIE['level'];
+	}
+
+			if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+			   {
+			       if($acess == 2)
+			         {
+			             echo'<li><a href="panel.php"> Admin Page</a></li>';
+			         }
+			   
+			   }
+			   
+			   ?>
 			<li><a href="#">Contact Us</a></li>
 		</ul>
 	</div>
@@ -200,12 +220,12 @@ WHERE
 				while($row2 = $result2->fetch_assoc())
 				{
 					echo '<tr>';
-						echo '<td class="leftpart" width="15%" rowspan="2">';
+						echo '<td class="leftpart" width="15% height="100%" rowspan="2">';
 							echo '<strong> <a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a> </strong>';
 							echo"<br>";
 							echo"<br>";
 
-							echo'<img src="imgs/img02.png" default="avatar pic" width="50%" height="40%" >';
+							echo'<img src="imgs/img02.png" default="avatar pic" width="80" height="70" >';
 								  echo"<br>";
 								  echo"<br>";
 
