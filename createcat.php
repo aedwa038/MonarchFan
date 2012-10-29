@@ -18,6 +18,22 @@ if($_POST['cat_name'] == '' || $_POST['cat_description'] == '')
 
 }	
 	
+	$test = "SELECT * FROM `categories` WHERE cat_name = '". $_POST['cat_name']  ."'";
+
+	$result = $mysqli->query($test);
+	
+	$count =$result->num_rows;
+	if($count == 1)
+	{
+		$row = $result->fetch_assoc();
+		if($row['cat_name'] == $_POST['cat_name'])
+		{
+			echo'<a href ="creatcat.php">This Forum has already been created </a>';
+			exit();
+		}
+	
+	}
+
 		
 	//the form has been posted, so save it
 	//$sql = "INSERT INTO categories(cat_name, cat_description)
