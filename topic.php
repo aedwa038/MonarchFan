@@ -129,6 +129,7 @@ $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or die ("could not co
 
 $sql= "SELECT
     topic_id,
+	frozen,
     topic_subject
 FROM
     topics
@@ -139,7 +140,10 @@ WHERE
 	
 	$row = $result->fetch_assoc();
 	echo "<h2>" . $row['topic_subject'] . " Disscussion </h2>" ;
-	
+	if($row['frozen'] != 0)
+	{
+		echo '<td><img src="imgs/lock.png" alt="icon" ></td>';
+	}
 	
 	
 	$query1 = "SELECT
@@ -147,6 +151,7 @@ WHERE
 	posts.post_content,
 	posts.post_date,
 	posts.post_by,
+	posts.frozen,
 	users.user_id,
 	users.user_name,
 	users.user_level
@@ -176,6 +181,9 @@ WHERE
 	posts.post_content,
 	posts.post_date,
 	posts.post_by,
+	posts.post_id,
+	posts.frozen,
+	posts.Edit_id,
 	users.user_id,
 	users.user_name,
 	users.user_level
@@ -220,7 +228,7 @@ WHERE
 				while($row2 = $result2->fetch_assoc())
 				{
 					echo '<tr>';
-						echo '<td class="leftpart" width="15% height="100%" rowspan="2">';
+						echo '<td class="leftpart" width="15%" height="100%" rowspan="2">';
 							echo '<strong> <a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a> </strong>';
 							echo"<br>";
 							echo"<br>";
@@ -241,12 +249,43 @@ WHERE
 					
 						     
 							echo strval($row2['post_date']);
+
+							if($row2['user_name'] == $name)
+						     {
+							 if($row2['frozen'] != 1 && $row['frozen'] != 1)
+							 {
+							
+								echo '<a href="editpost.php?id='. $row2[post_id]. '" class="Edit" style="float:right;"> Edit</a>';
+								echo '<a href="deletepost.php?id='. $row2[post_id]. '" class="Edit" style="float:right;"> Delete</a>';
+							 }
+						     }
+							 else if ( $acess >= 1)
+							 {
+								if($row2['frozen'] != 1 && $row['frozen'] != 1)
+								{
+									echo '<a href="editpost.php?id='. $row2[post_id]. '" class="Edit" style="float:right;"> Edit</a>';
+									echo '<a href="deletepost.php?id='. $row2[post_id]. '" class="Edit" style="float:right;"> Delete</a>';
+								}
+							 }
 							echo'</td>';
 							echo"</tr>";
 							echo"<tr>";
 							echo '<td class="rightpart">';
 							//echo "<hr>";
 							echo nl2br(mysql_real_unescape_string($row2['post_content']), 2);
+							if($row2['Edit_id'] !=  0)
+							{
+								
+									$names = "SELECT user_name, user_id
+						FROM `users`
+						WHERE user_id = " . $row2['Edit_id'];
+						
+						$edit_results = $mysqli->query($names);
+						$editor = $edit_results->fetch_assoc();
+								echo "<br> <br>";
+								echo "edited by <strong> " . $editor['user_name'] . "<strong>";
+									
+							}
 							//echo $row2['post_content'];
 						echo '</td>';
 					echo '</tr>';
@@ -261,7 +300,7 @@ WHERE
 
 		echo "<br>";
 		echo "<hr>";
-		if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+		if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true && $row['frozen'] == 0 )
 {
 	echo "<h4>Quick Reply</h4>";
 	

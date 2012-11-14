@@ -12,19 +12,24 @@ $password = $_POST['password'];
 $name = $mysqli->real_escape_string($name);
 $password = $mysqli->real_escape_string($password);
 
-$query = "SELECT user_name, user_pass, user_id, user_level FROM `users` WHERE user_name= '".$name. 
+$query = "SELECT user_name, user_pass, user_id, user_level, status FROM `users` WHERE user_name= '".$name. 
 "' AND user_pass='"  . $password . "'" ;
    $result = $mysqli ->query($query) or die ("Could not complete query" );
    
+  
    $count = $result->num_rows;
    
    if($count == 1)
    {
-   
-		echo"welcome " . $name;
-		echo"<br>";
+	
+		
+			
+		
 		
 		$row = $result->fetch_assoc();
+		
+			if($row['status'] != verify)
+			{
 		//session_start();
 		//$_SESSION['username'] = $name;
 		//$_SESSION['id'] = $row['user_id'] ;
@@ -49,7 +54,12 @@ $query = "SELECT user_name, user_pass, user_id, user_level FROM `users` WHERE us
 		//echo'<a href="index.php">frontpage</a>';
 		//echo"Memebership type =" .$_SESSION['level'];
 		header("location:index.php");
+		}
 		
+		else
+		{
+			echo "You are not an user on this site please activate your account!!!";
+		}
 		//print_r($row);
 		
 		//print_r($result);

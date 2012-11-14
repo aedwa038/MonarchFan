@@ -87,6 +87,7 @@ else
 					topic_id,
 					topic_subject,
 					topic_date,
+					frozen,
 					topic_cat
 				FROM
 					topics
@@ -139,12 +140,23 @@ else
 						<th>Author </th>
 						<th> Replies</th>
 						<th> Last Post:</th>
-						<th>Created Date</th>
-					  </tr>';
+						<th>Created Date</th>';
+						if ($acess >= 1)
+						{
+							echo '<th>Lock:</th>';
+						}
+					  echo '</tr>';
 				while($row2 = $result2->fetch_assoc())
 				{
 					echo '<tr>';
-					echo'<td><img src="imgs/web_layout_32.png" alt="icon" ></td>';
+					if ($row2['frozen'] == 0)
+					{
+						echo'<td><img src="imgs/web_layout_32.png" alt="icon" ></td>';
+					}
+					else 
+					{
+						echo '<td><img src="imgs/lock.png" alt="icon" ></td>';
+					}
 						echo '<td class="leftpart" width="40%" >';
 							echo '<strong><a href="topic.php?id=' . $row2['topic_id'] . '">' . $row2['topic_subject'] . '</a></strong>';
 						echo '</td>';
@@ -170,7 +182,7 @@ else
 						$row5 = $result4->fetch_assoc();
 					
 						$user_id = $row5['user_name'];
-						echo'<td><a href=members.php?id="'.$row5['user_id'] .'">'. $user_id .'<a></td>';
+						echo'<td><a href="members.php?id='.$row5['user_id'] .'">'. $user_id .'</a></td>';
 						
 
 						$rep = "SELECT post_by
@@ -202,11 +214,22 @@ else
 					
 						$last_date = $row6['post_date'];
 						$last_user = $row7['user_name'];
-						echo'<td><a href=members.php?id="'. $row7['user_id']  . '" >' .$last_user .'</a><br>'. $last_date . '</td>';
+						echo'<td><a href="members.php?id='. $row7['user_id']  . '" >' .$last_user .'</a><br>'. $last_date . '</td>';
 						
 						echo '<td class="rightpart" width="10%">';
 							echo date('d-m-Y', strtotime($row2['topic_date']));
 						echo '</td>';
+						
+						if($acess >= 1)
+						{
+							if($row2['frozen'] == 0){
+								echo '<td><a href="lockthread.php?id='.$row2[topic_id] .'"><img src="imgs/lock.png" alt="icon" ></a></td>';
+							}
+							else
+							{
+								echo '<td><a href="lockthread.php?id='.$row2[topic_id] .'">Unlock</a></td>';
+							}
+						}
 					echo '</tr>';
 				}
 			}
