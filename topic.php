@@ -232,7 +232,13 @@ WHERE
 				{
 					echo '<tr>';
 						echo '<td class="leftpart" width="15%" height="100%" rowspan="2">';
-							echo '<strong> <a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a> </strong>';
+							if ( $row2['state'] == 2) {
+							echo "Deleted User";
+							}
+							else
+							{
+								echo '<strong> <a href="members.php?id='. $row2['user_id'].'">' . $row2['user_name'] .'</a> </strong>';
+							}
 							echo"<br>";
 							echo"<br>";
 
@@ -279,15 +285,22 @@ WHERE
 							if($row2['Edit_id'] !=  0)
 							{
 								
-									$names = "SELECT user_name, user_id
+									$names = "SELECT user_name, user_id, state
 						FROM `users`
 						WHERE user_id = " . $row2['Edit_id'];
 						
 						$edit_results = $mysqli->query($names);
 						$editor = $edit_results->fetch_assoc();
 								echo "<br> <br>";
-								echo "edited by <strong> " . $editor['user_name'] . "<strong>";
-									
+								
+								if($editor['state'] == 2)
+								{
+								
+								}
+								else
+								{
+									echo "edited by <strong> " . $editor['user_name'] . "<strong>";
+								}	
 							}
 							//echo $row2['post_content'];
 						echo '</td>';

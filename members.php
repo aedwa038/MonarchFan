@@ -114,8 +114,33 @@ FROM `admin_level` Where 1";
 				$last_active = $r->fetch_assoc();
 				//echo"test";
 				echo"<td>".$last_active['post_date'] ."</td>";
+				
 			 echo"</tr>";
+			 if($row['state'] == 1)
+				{	
+					
+					echo "<tr><td> Status:</td>";
+					echo "<td>BANNED</td></tr>";
+				}
 echo "</table>";
+if($acess >=1)
+{
 
+if($row['user_level']  == 0)
+{
+echo '<form action="suspend.php" method="post">';
+				echo '<input type="hidden" name="user_id" value= "'.$_GET['id'] . '" >';
+				if($row['state'] == 1 )
+				{
+					echo '<input type="submit" value="Unsuspend" >';
+				}
+				else
+				{	
+					echo '<input type="submit" value="Suspend" >';
+				}				
+				echo'</form>';
+}
+
+}
 include("footer.php");
 ?>

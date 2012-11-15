@@ -28,6 +28,12 @@ $query = "SELECT user_name, user_pass, user_id, user_level, status, state FROM `
 		
 		$row = $result->fetch_assoc();
 		
+		if($row['state'] == 2)
+		{
+			echo "User was Deleted from this forum!!!!!";
+			exit();
+		}
+		
 			if($row['status'] != verify)
 			{
 		//session_start();

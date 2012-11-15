@@ -172,7 +172,7 @@ else
 						$row4 = $result3->fetch_assoc();
 						$post_by = $row4[post_by];
 						
-						$names = "SELECT user_name, user_id
+						$names = "SELECT user_name, user_id, state
 						FROM `users`
 						WHERE user_id = ".$post_by  ;
 						//echo"$names";
@@ -182,7 +182,16 @@ else
 						$row5 = $result4->fetch_assoc();
 					
 						$user_id = $row5['user_name'];
-						echo'<td><a href="members.php?id='.$row5['user_id'] .'">'. $user_id .'</a></td>';
+						//echo '<td class="leftpart" width="15%" height="100%" rowspan="2">';
+							if ( $row5['state'] == 2) {
+							echo "<td>Deleted User</td>";
+							}
+							else
+							{
+								echo'<td><a href="members.php?id='.$row5['user_id'] .'">'. $user_id .'</a></td>';
+							}
+						
+						
 						
 
 						$rep = "SELECT post_by
@@ -205,7 +214,7 @@ else
 						$last_post = $row6['post_by'];
 						//echo"$last_post";
 
-						$names2 = "SELECT user_name, user_id
+						$names2 = "SELECT user_name, user_id, state
 						FROM `users`
 						WHERE user_id = ".$last_post  ;
 						//echo $names2;
@@ -214,7 +223,17 @@ else
 					
 						$last_date = $row6['post_date'];
 						$last_user = $row7['user_name'];
-						echo'<td><a href="members.php?id='. $row7['user_id']  . '" >' .$last_user .'</a><br>'. $last_date . '</td>';
+						
+						if ( $row7['state'] == 2) {
+							echo "<td>Deleted User</td>";
+							}
+							else
+							{
+								
+								echo'<td><a href="members.php?id='. $row7['user_id']  . '" >' .$last_user .'</a><br>'. $last_date . '</td>';
+							}
+						
+						//echo'<td><a href="members.php?id='. $row7['user_id']  . '" >' .$last_user .'</a><br>'. $last_date . '</td>';
 						
 						echo '<td class="rightpart" width="10%">';
 							echo date('d-m-Y', strtotime($row2['topic_date']));

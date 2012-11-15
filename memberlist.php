@@ -60,10 +60,19 @@ $result = $mysqli->query($query);
 				<th>Members</th>
 				<th></th>
 				<th></th>
+				<th></th>
 			
 			  </tr>';
 			  while($row = $result -> fetch_assoc())
 			  {
+			  
+			  if($row['state'] == 2 )
+			  {
+			  
+			  }
+			  
+			  else
+			{
 			  	echo"<tr>";
 				echo'<td>';
 				echo $row[user_name];
@@ -85,7 +94,17 @@ $result = $mysqli->query($query);
 			
 			echo"</td>";
 			
+			
+			
+			echo '<td align="center">';
+				echo '<form action="deleteuser.php" method="post">';
+				echo '<input type="hidden" name="user_id" value="'.$row[user_id] . '" >';
+					echo '<input type="submit" value="Delete" >';		
+				echo'</form>';
+			
+			echo"</td>";
 				echo"</tr>";
+			}
 			  }
 
 
