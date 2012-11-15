@@ -59,6 +59,7 @@ $result = $mysqli->query($query);
 			  <tr>
 				<th>Members</th>
 				<th></th>
+				<th></th>
 			
 			  </tr>';
 			  while($row = $result -> fetch_assoc())
@@ -68,6 +69,22 @@ $result = $mysqli->query($query);
 				echo $row[user_name];
 				echo'</td>';
 				echo'<td><a href="members.php?id=' . strval($row[user_id]) .'">EDIT</a></td>';
+			
+			echo '<td align="center">';
+				echo '<form action="suspend.php" method="post">';
+				echo '<input type="hidden" name="user_id" value="'.$row[user_id] . '" >';
+				if($row['state'] == 1 )
+				{
+					echo '<input type="submit" value="Unsuspend" >';
+				}
+				else
+				{	
+					echo '<input type="submit" value="Suspend" >';
+				}				
+				echo'</form>';
+			
+			echo"</td>";
+			
 				echo"</tr>";
 			  }
 

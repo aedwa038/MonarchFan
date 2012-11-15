@@ -12,7 +12,7 @@ $password = $_POST['password'];
 $name = $mysqli->real_escape_string($name);
 $password = $mysqli->real_escape_string($password);
 
-$query = "SELECT user_name, user_pass, user_id, user_level, status FROM `users` WHERE user_name= '".$name. 
+$query = "SELECT user_name, user_pass, user_id, user_level, status, state FROM `users` WHERE user_name= '".$name. 
 "' AND user_pass='"  . $password . "'" ;
    $result = $mysqli ->query($query) or die ("Could not complete query" );
    
@@ -41,6 +41,7 @@ $query = "SELECT user_name, user_pass, user_id, user_level, status FROM `users` 
 			setcookie("id", $row['user_id'], time() + 31536000);
 			setcookie("level", $row['user_level'], time() + 31536000);
 			setcookie("signed_in", "true", time () + 31536000);
+			setcookie("state", $row['state'], time () + 31536000);
 		}
 		else
 		{
@@ -48,6 +49,7 @@ $query = "SELECT user_name, user_pass, user_id, user_level, status FROM `users` 
 			setcookie("id", $row['user_id']);
 			setcookie("level", $row['user_level']);
 			setcookie("signed_in", "true");
+			setcookie("state", $row['state'] );
 		}
 		//echo"Redirecting to front page";
 		//echo $_POST['remember'];

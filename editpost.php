@@ -87,6 +87,7 @@ $update = $_POST['post_content'];
 $sql = "UPDATE `aedwards`.`posts` SET `post_content` = '".$update  ."',`Edit_date` = 'NOW()',`Edit_id` = '".$id."' WHERE `posts`.`post_id` =". $_POST[post_id];
 
 
+
 //echo $sql;
 
 $mysqli->query($sql) or die ("could not complete query");

@@ -1,19 +1,3 @@
-<?php
-
-session_start();
-$name = '';
-
-if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
-{
-
-	$name = $_COOKIE['username'];
-	$id = $_COOKIE['id'];
-	$acess = $_COOKIE['level'];
-
-
-}
-
-?>
 
 <?php
 

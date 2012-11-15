@@ -9,6 +9,7 @@ if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 	$name = $_COOKIE['username'];
 	$id = $_COOKIE['id'];
 	$acess = $_COOKIE['level'];
+	
 
 
 }
@@ -90,6 +91,7 @@ if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 	$name = $_COOKIE['username'];
 	$id = $_COOKIE['id'];
 	$acess = $_COOKIE['level'];
+	$state = $_COOKIE['state'];
 
 
 }
@@ -186,6 +188,7 @@ WHERE
 	posts.Edit_id,
 	users.user_id,
 	users.user_name,
+	users.state,
 	users.user_level
 FROM
 	posts
@@ -252,7 +255,7 @@ WHERE
 
 							if($row2['user_name'] == $name)
 						     {
-							 if($row2['frozen'] != 1 && $row['frozen'] != 1)
+							 if($row2['frozen'] != 1 && $row['frozen'] != 1 && $row['state'] != 1 )
 							 {
 							
 								echo '<a href="editpost.php?id='. $row2[post_id]. '" class="Edit" style="float:right;"> Edit</a>';
@@ -300,7 +303,7 @@ WHERE
 
 		echo "<br>";
 		echo "<hr>";
-		if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true && $row['frozen'] == 0 )
+		if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true && $row['frozen'] == 0 && $state == 0 )
 {
 	echo "<h4>Quick Reply</h4>";
 	
