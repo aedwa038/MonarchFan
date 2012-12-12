@@ -55,13 +55,14 @@ $query = ' SELECT * FROM `users` WHERE 1';
 $result = $mysqli->query($query);
 
 
-	echo '<table width="50%" >
+	echo '<table width="80%" >
+
 			  <tr>
 				<th>Members</th>
+				<th width = "20%"></th>
 				<th></th>
 				<th></th>
-				<th></th>
-			
+			    <th width="50%">USER RANK</th>
 			  </tr>';
 			  while($row = $result -> fetch_assoc())
 			  {
@@ -103,6 +104,39 @@ $result = $mysqli->query($query);
 				echo'</form>';
 			
 			echo"</td>";
+			//User rank display
+			$sql = "SELECT count( * ) post_topic FROM posts WHERE post_by = ". $row[user_id] ;
+
+         	$results = $mysqli->query($sql);
+	        $count=$results->num_rows;
+	//echo $count;
+	while($row1 = $results->fetch_assoc())
+	{
+	
+	$tcount=$row1['post_topic'];
+	//echo $tcount;
+	
+	if($tcount>0 && $tcount<=5)
+	{
+	$userrank = "Newbie";
+	}
+	if($tcount>5 && $tcount<=16)
+	{
+	$userrank = "user";
+	}
+	if($tcount>16 && $tcount<=30)
+	{
+	$userrank = "Intermediate user";
+
+	}
+	if($tcount>30)
+	{
+	$userrank = " Veteran";
+	}
+}	
+			echo '<td align="center">';
+			echo $userrank;
+			        
 				echo"</tr>";
 			}
 			  }

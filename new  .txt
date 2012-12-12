@@ -1,0 +1,27 @@
+$sql = 'SELECT count( * ) post_topic FROM `posts` WHERE post_by = ' .$_GET['id'];
+
+$result = $mysqli->query($sql);
+                                                                while($row1 = $result -> fetch_array($sql))
+                                                                {
+                                                                  $tcount=$row1['post_topic'];
+                                                                }
+														
+                                                                if($tcount>0 && $tcount<=5)
+                                                                {
+                                                                                $userrank="you are Newbie";
+                                                                }
+                                                                if($tcount>5 && $tcount<=16)
+                                                                {
+                                                                                $userrank = "you are a user";
+                                                                }
+                                                                if($tcount>16 && $tcount<=30)
+                                                                {
+                                                                                $userrank = "you are an intermediate user";
+																				
+                                                                }
+																if($tcount>30)
+																{
+																                $userrank = "you are a Veteran";
+																}	
+																
+																

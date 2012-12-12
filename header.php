@@ -19,6 +19,25 @@ if(isset($_SESSION['signed_in']) && $_SESSION['signed_in'] == true)
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
   <link rel="stylesheet" type="text/css" href="style.css" >
+  <!-- JavaScript includes -->
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="assets/js/script.js"></script>
+		<!-- Captcha -->
+		
+	<script type="text/javascript" src="latest-jquery/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="latest-jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="captcha/jquery.captcha.js"></script>
+	<link href="captcha/captcha.css" rel="stylesheet" type="text/css" />
+	
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		$(function() {
+			$(".ajax-fc-container").captcha({
+				borderColor: "silver",
+				text: "Verify that you are a human,<br />drag <span>scissors</span> into the circle."
+			});
+		});
+	</script>
 
 </head>
 

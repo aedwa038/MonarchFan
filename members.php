@@ -18,7 +18,7 @@ require("config.php");
 $mysqli = new mysqli(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB) or
 die ("could not connect to database.");
 
-echo"<h3> Member Profile</h3>";
+echo"<h3>Profile Image</h3>";
 
 
 
@@ -122,7 +122,40 @@ FROM `admin_level` Where 1";
 					echo "<tr><td> Status:</td>";
 					echo "<td>BANNED</td></tr>";
 				}
-echo "</table>";
+				
+				echo '<tr><a href="uploads/' . $row[user_name] . '" target="_blank"> 
+ 	         <object data="uploads/'. $row[user_name] .'.jpeg" width="100" height="100">
+		   <a href="uploads/img02.png" target="_blank">
+		 <img src="uploads/img02.png" width="100" height="100" ></object></a></tr>';
+
+       echo "</table>";
+	   
+			
+						
+				
+				$sql2 = "select * from subscribe where sub_by = " .$id . " and sub_to = " .$_GET[id];
+				
+				$result = $mysqli->query($sql2);
+				
+				//$row=$result2->fetch_assoc();
+				//echo $row;
+				$count = $result->num_rows;
+				
+				if($count==0){
+				echo '<form action="subscribe.php?id_to='. $_GET['id'] .'&id_by='. $id .'" method="POST">';
+					echo '<input type="hidden" name="flag" value="subscribe" >';
+					echo '<input type="submit" value="Subscribe" >';
+					echo '</form>';
+				
+				}
+				if($count==1){
+				echo '<form action="subscribe.php?id_to='. $_GET['id'] .'&id_by='. $id .'" method="POST">';
+					echo '<input type="hidden" name="flag" value="unsubscribe" >';
+					echo '<input type="submit" value="Unsubscribe" >';
+					echo '</form>';
+				}
+				
+	  
 if($acess >=1)
 {
 
@@ -142,5 +175,7 @@ echo '<form action="suspend.php" method="post">';
 }
 
 }
+include("searchuser.php");
+
 include("footer.php");
 ?>

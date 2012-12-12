@@ -26,17 +26,17 @@ return;
 $sql="INSERT INTO users (user_name, user_pass, user_email,user_date, activationkey, status) VALUES ('$name', '$password', '$email',NOW(), '$activationKey', 'verify')";
 
 if (!$mysqli->query($sql))
-
   {
 
   die('Error: ' . $mysqli->error());
 
   }
 
-echo "An email has been sent to $_POST[email] with an activation key. Please check your mail to complete registration.";
 
 ##Send activation Email
-
+else
+{
+echo "An email has been sent to $_POST[email] with an activation key. Please check your mail to complete registration.";
 $to      = $_POST[email];
 
 $subject = " Monarch Forum Registration";
@@ -51,7 +51,7 @@ $headers = 'From: Monarch Forums' . "\r\n" .
 
 mail($to, $subject, $message, $headers);
 
-} else {
+} }else {
 
 ##User isn't registering, check verify code and change activation code to null, status to activated on success
 
@@ -61,14 +61,14 @@ $query = "SELECT * FROM users";
 
 $result = $mysqli->query($query) or die($mysqli->error());
 
-
+echo "Congratulations! your account has been created.";
 
 
   while($row = $result->fetch_array()){
 
     if ($queryString == $row["activationkey"]){
 
-       echo "Congratulations!" . $row["user_name"] . " your account has been created.";
+      // echo "Congratulations!" . $row["user_name"] . " your account has been created.";
 
        $sql="UPDATE users SET activationkey = '', status='activated' WHERE user_id = $row[user_id]";
 

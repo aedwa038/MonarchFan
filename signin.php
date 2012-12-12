@@ -19,6 +19,7 @@ $query = "SELECT user_name, user_pass, user_id, user_level, status, state FROM `
   
    $count = $result->num_rows;
    
+   
    if($count == 1)
    {
 	

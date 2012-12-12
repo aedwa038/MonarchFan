@@ -268,7 +268,11 @@ if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 	echo "Welcome ". $name;
 	echo"<br>";
 	
-echo'<img src="imgs/img02.png" default="avatar pic" width="25%" height="15%" >';
+echo '<a href="uploads/' . $name . '" target="_blank"> 
+ 	         <object data="uploads/'. $name .'.jpeg" width="100" height="100">
+		   <a href="uploads/img02.png" target="_blank">
+		 <img src="uploads/img02.png" width="100" height="100" ></object></a>'
+	      ;
 	echo"<br>";
 
 	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;

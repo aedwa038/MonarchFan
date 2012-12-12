@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 $name = '';
@@ -186,6 +185,7 @@ WHERE
 	posts.post_id,
 	posts.frozen,
 	posts.Edit_id,
+	posts.image_path,
 	users.user_id,
 	users.user_name,
 	users.state,
@@ -200,6 +200,13 @@ WHERE
 	posts.post_topic = " .$_GET['id'] . " $pages->limit" ;
 	//echo $query;
 	$result2 = $mysqli->query($query) or die ("could not complete query");
+	$sql4 = 'SELECT count( * ) post_topic  `posts` WHERE post_by = ' .$_GET['id'];
+
+
+																
+													 
+                                                                
+																
 	if(!$result2)
 		{
 			
@@ -231,7 +238,8 @@ WHERE
 				while($row2 = $result2->fetch_assoc())
 				{
 					echo '<tr>';
-						echo '<td class="leftpart" width="15%" height="100%" rowspan="2">';
+					
+						echo '<td class="leftpart" width="35%" height="100%" rowspan="2">';
 							if ( $row2['state'] == 2) {
 							echo "Deleted User";
 							}
@@ -241,11 +249,32 @@ WHERE
 							}
 							echo"<br>";
 							echo"<br>";
-
-							echo'<img src="imgs/img02.png" default="avatar pic" width="80" height="70" >';
+							if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
+							{
+							echo '<a href="uploads/' . $row2['user_name'].'"  target="_blank"> 
+							<object data="uploads/'. $row2['user_name'].'.jpeg" width="100" height="100"></a>
+							<a href="uploads/img02.png" target="_blank">
+								<img src="uploads/img02.png" width="100" height="100" >
+								</object>
+								</a>';
 								  echo"<br>";
+								                               
+																
+							  echo"<br>";
+							}
+							else
+							{
+							echo '<a href="index.php"> 
+							<object data="uploads/'. $row2['user_name'].'.jpeg" width="100" height="100">
+							
+								<img src="uploads/img02.png" width="100" height="100" >
+								</object>
+								</a>';
 								  echo"<br>";
-
+								                               
+																
+							  echo"<br>";
+							  }
 								$query3 = "SELECT level FROM `admin_level` WHERE id ="  .$row2['user_level'] ;
 
 							$result3 = $mysqli->query($query3);
@@ -253,7 +282,46 @@ WHERE
 								
       							$level = $row4[level];
 							echo $level;
-						echo '</td>';
+							{
+							$sql3 = "SELECT count( * ) post_topic FROM posts WHERE post_by =" .$row2['user_id'] ;
+
+	$results = $mysqli->query($sql3);
+	$count=$results->num_rows;
+	//echo $count;
+	while($row3 = $results->fetch_assoc())
+	{
+	$tcount=$row3['post_topic'];
+	
+
+	
+	if($tcount>0 && $tcount<=5)
+	{
+	$userrank=" Newbie";
+	$uplimit=1;
+	}
+	if($tcount>5 && $tcount<=16)
+	{
+	$userrank = " user";
+	$uplimit=1;
+	}
+	if($tcount>16 && $tcount<=30)
+	{
+	$userrank = "Intermediate user";
+    $uplimit=2;
+	}
+	if($tcount>30)
+	{
+	$userrank = "Veteran";
+	$uplimit=3;
+	}
+	echo '<hr>';
+	echo '<br>';	
+echo "<span class='usrrank'>";echo "USER RANK:  ";echo $userrank;echo "</span>";	
+echo '</br>';
+
+}
+}
+	echo '</td>';
 						echo '<td class="rightpart" height="10%">';
 					
 						     
@@ -281,7 +349,18 @@ WHERE
 							echo"<tr>";
 							echo '<td class="rightpart">';
 							//echo "<hr>";
-							echo nl2br(mysql_real_unescape_string($row2['post_content']), 2);
+							echo nl2br(mysql_real_unescape_string($row2['post_content']),2);
+							
+							$pieces = explode(",",$row2['image_path']);
+							if($row2['image_path']!="")
+							{
+							
+							$count = count($pieces);
+							while($count)
+							{
+							echo '<img src="multiple/'.$pieces[--$count].' " alt="postimage" width="150" height="150"/>';
+							}
+							}
 							if($row2['Edit_id'] !=  0)
 							{
 								
@@ -318,14 +397,117 @@ WHERE
 		echo "<hr>";
 		if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true && $row['frozen'] == 0 && $state == 0 )
 {
+	//Reply
+	
 	echo "<h4>Quick Reply</h4>";
 	
-	echo '<form method="post" action="reply.php">';
+	echo '<form method="post" action="reply.php" enctype="multipart/form-data">';
 	echo '<input type="hidden" name="topic_id" value="'.$_GET[id] . '" >';
 	echo'<label id="elements">Reply:</label> <textarea name="reply" rows="10" cols="50"></textarea>';
-	echo '<input type="submit" value="Reply" >';
-	echo'</form>';
-		
+	//echo '<input type="submit" value="Reply" >';
+	//echo'</form>';
+	
+	//Multiple Image upload
+	$sql3 = "SELECT count( * ) post_topic FROM posts WHERE post_by =" .$id ;
+
+	$results = $mysqli->query($sql3);
+	$count=$results->num_rows;
+	//echo $count;
+	while($row3 = $results->fetch_assoc())
+	{
+	$tcount=$row3['post_topic'];
+	
+
+	
+	if($tcount>0 && $tcount<=5)
+	{
+	$userrank=" Newbie";
+	$uplimit=1;
+	}
+	if($tcount>5 && $tcount<=16)
+	{
+	$userrank = " user";
+	$uplimit=1;
+	}
+	if($tcount>16 && $tcount<=30)
+	{
+	$userrank = "Intermediate user";
+    $uplimit=2;
+	}
+	if($tcount>30)
+	{
+	$userrank = "Veteran";
+	$uplimit=3;
+	}
+	}
+//	echo $uplimit;
+	//echo $userrank;
+//echo '<form action="upload.php" method="post" enctype="multipart/form-data">';
+ for($i=1;$i<=$uplimit;$i++){
+ 
+ echo '<p>Image'.$i.' :<input name="image[]" type="file" /></p>';
+ }
+ //echo ' <p>Image2 :<input name="image[]" type="file" /></p>';
+  //echo '<p>Image3 :<input name="image[]" type="file" /></p>';
+  echo '<input type="submit" name="submit" value="reply" />';
+echo '</form>';
+
+   /* define ("MAX_SIZE","5000"); 
+function getExtension($str)
+{
+         $i = strrpos($str,".");
+         if (!$i) { return ""; }
+         $l = strlen($str) - $i;
+         $ext = substr($str,$i+1,$l);
+         return $ext;
+}
+
+$errors=0;
+         
+if(isset($_POST['sendfiles'])) 
+{
+    
+    
+
+    $uploaddir = "multiple/"; //a directory inside
+    foreach ($_FILES['photos']['name'] as $name => $value)
+    {
+        $filename = stripslashes($_FILES['photos']['name'][$name]);
+     //get the extension of the file in a lower case format
+          $extension = getExtension($filename);
+         $extension = strtolower($extension);
+      
+         if (($extension != "jpg") && ($extension != "jpeg") && ($extension != "png") && ($extension != "gif")) 
+         {
+        //print error message
+             echo '<h1>Unknown extension!</h1>';
+             $errors=1;
+         }
+        else
+        {
+            $size=filesize($_FILES['photos']['tmp_name'][$name]);
+            if ($size > MAX_SIZE*1024)
+            {
+                echo '<h1>You have exceeded the size limit!</h1>';
+                $errors=1;
+            }
+            $image_name= $id . '_' .'.'.$extension;
+            $newname="multiple/".$image_name;
+			$counter = 1;
+           $copied = copy($_FILES['photos']['tmp_name'][$name], $newname);
+			   
+            if (!$copied) 
+            {
+                echo '<h1>Copy unsuccessfull!</h1>';
+                $errors=1;
+            }
+        
+        }
+
+    }
+}*/
+
+    
 }
 
 
@@ -337,7 +519,12 @@ if(isset($_COOKIE['signed_in']) && $_COOKIE['signed_in'] == true)
 	echo "Welcome ". $name;
 	echo"<br>";
 
-	echo'<img src="imgs/img02.png" default="avatar pic" width="25%" height="15%" >';
+	echo'<a href="uploads/' . $name .'"  target="_blank"> 
+							<object data="uploads/'. $name .'.jpeg" width="100" height="100"></a>
+							<a href="uploads/img02.png" target="_blank">
+								<img src="uploads/img02.png" width="100" height="100" >
+								</object>
+								</a>';
 	echo"<br>";
 
 	$query = "SELECT user_level FROM `users` WHERE user_name = '" .$name ."'" ;
